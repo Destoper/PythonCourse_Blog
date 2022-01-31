@@ -1,0 +1,44 @@
+{% extends 'blogs/base.html' %}
+
+{% block page_header %}
+  <h3>Posts</h3>
+{% endblock page_header %}
+
+{% block content %}
+  
+  <ul>
+  {% for post in posts %}
+    <div class="card mb-5">
+      <h4 class="card-header">
+        {{ post.title|linebreaks }}
+        <small class="text-muted">
+          {{ post.date_added|date:'M d, Y H:i' }} -
+                        
+          {% if post.owner != user and not user.is_superuser %}
+            {{ post.owner }}
+          {% elif post.owner != user and user.is_superuser %}
+            {{ post.owner }} - 
+            <a href="{% url 'blogs:edit_post' post.id %}">Edit post</a>
+          {% else %}
+            Your - 
+            <a href="{% url 'blogs:edit_post' post.id %}">Edit post</a>
+          {% endif %}  
+        </small>
+      </h4>
+      <div class="card-body" style="background-color: rgb(242, 242, 242);">
+        {{ post.text|linebreaks }}
+      </div>
+    </div>
+  {% empty %}
+    <p>There are no posts yet.</p>
+  {% endfor %}
+
+{% endblock content %}
+
+
+
+
+
+
+ 
+
